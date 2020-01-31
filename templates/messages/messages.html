@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load inbox %}
+
+{% block content %}
+<div class="text-center">
+<a class="lead text-dark" href="./messages/inbox"><i class="fas fa-envelope"></i> Inbox ({% inbox_count %})</p>
+<a class="lead text-dark" href="./messages/outbox"><i class="fas fa-envelope"></i> Outbox</p>
+</div>
+{% endblock %}

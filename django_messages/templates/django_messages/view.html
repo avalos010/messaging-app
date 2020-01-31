@@ -1,0 +1,55 @@
+{% extends "django_messages/base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+<h1 class="text-center">{% trans "View Message" %}</h1>
+<ul class="list-group">
+<li class="list-group-item">
+<p class="lead"> Sender</p>
+<p>{{message.sender}}</p>
+</li>
+<li class="list-group-item">
+<p class="lead">Date</p>
+<p>{{ message.sent_at|date:_("DATETIME_FORMAT")}}</p>
+</li>
+<li class="list-group-item">
+<p class="lead"> Body </p>
+<p>{{message.body}}</p>
+</li>
+</ul>
+<div class="d-flex flex-row justify-content-center">
+    <a class="btn btn-dark m-2" href="{% url 'messages_reply' message.id %}">{% trans "Reply" %}</a>
+    <a class="btn btn-danger m-2" href="{% url 'messages_delete' message.id %}">{% trans "Delete" %}</a> 
+</div>
+</div>
+{% comment %} <dl class="message-headers">
+    <dt>{% trans "Subject" %}</dt>
+    <dd><strong>{{ message.subject }}</strong></dd>
+    <dt>{% trans "Sender" %}</dt>
+    <dd>{{ message.sender }}</dd>
+    <dt>{% trans "Date" %} </dt>
+    <dd>{{ message.sent_at|date:_("DATETIME_FORMAT")}}</dd>
+    <dt>{% trans "Recipient" %}</dt>
+    <dd>{{ message.recipient }}</dd>
+</dl>
+{{ message.body|linebreaksbr }}<br /><br />
+
+{% ifequal message.recipient.pk user.pk %}
+<a href="{% url 'messages_reply' message.id %}">{% trans "Reply" %}</a>
+{% endifequal %}
+<a href="{% url 'messages_delete' message.id %}">{% trans "Delete" %}</a> {% endcomment %}
+
+{% comment %}Example reply_form integration
+{% if reply_form %}
+<h1>{% trans "Compose reply"%}</h1>
+<form action="{% url 'messages_reply' message.id %}" method="post">
+{% csrf_token %}
+<table>
+{{ reply_form.as_table }}
+</table>
+<input type="submit" value="{% trans "Send" %} &raquo;"/>
+</form>
+{% endif %}
+{% endcomment %}
+{% endblock %}
